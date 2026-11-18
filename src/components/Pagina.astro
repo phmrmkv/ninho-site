@@ -1,0 +1,348 @@
+---
+// A página inicial inteira. Os dois idiomas usam este mesmo componente: só o dicionário muda.
+import { Picture } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import Cabecalho from './Cabecalho.astro';
+import Rodape from './Rodape.astro';
+import { textos } from '@/i18n';
+import { ROTAS, ARQUIVOS, LINKS, SITE, VERSAO, type Idioma } from '@/dados/ninho';
+
+import painelEscuro from '@/assets/capturas/painel.png';
+import painelClaro from '@/assets/capturas/painel-claro.png';
+import sites from '@/assets/capturas/sites.png';
+import portas from '@/assets/capturas/portas.png';
+import baixar from '@/assets/capturas/baixar-e-atualizar.png';
+import verificar from '@/assets/capturas/verificar.png';
+import boasVindas from '@/assets/capturas/boas-vindas.png';
+
+interface Props {
+  idioma: Idioma;
+}
+const { idioma } = Astro.props;
+const t = textos[idioma];
+const outro: Idioma = idioma === 'pt' ? 'en' : 'pt';
+const imagens = { sites, portas, baixar, verificar, boasVindas } as const;
+
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Ninho',
+  url: new URL(ROTAS[idioma], SITE).href,
+  inLanguage: t.htmlLang,
+  operatingSystem: 'Windows 10, Windows 11',
+  applicationCategory: 'DeveloperApplication',
+  license: 'https://opensource.org/licenses/MIT',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  downloadUrl: LINKS.releases,
+  softwareVersion: VERSAO,
+  description: t.meta.descricao,
+};
+
+const chevron =
+  '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6"></path></svg>';
+---
+
+<Base idioma={idioma} title={t.meta.titulo} description={t.meta.descricao} jsonld={jsonld}>
+  <Cabecalho slot="topo" idioma={idioma} trocaHref={ROTAS[outro]} />
+
+  <section class="hero" aria-labelledby="titulo-hero">
+    <div class="miolo hero-grade">
+      <div>
+        <p class="selo">{t.selo}</p>
+        <h1 id="titulo-hero">{t.hero.h1}</h1>
+        <p class="hero-texto">{t.hero.texto}</p>
+        <p class="hero-quem">{t.hero.paraQuem}</p>
+        <div class="hero-acoes">
+          <a class="btn btn-primario" href={ARQUIVOS.win64}>{t.hero.baixar}</a>
+          <a class="btn btn-secundario" href={LINKS.repo} rel="noopener">{t.hero.codigo}</a>
+        </div>
+        <p class="hero-nota">{t.hero.nota}</p>
+      </div>
+
+      <div class="painel">
+        <div class="painel-barra">
+          <span>{t.painel.titulo}</span>
+          <span class="rotulo">{t.painel.rotuloIlustracao}</span>
+        </div>
+        <table>
+          <caption>{t.painel.titulo} ({t.painel.rotuloIlustracao})</caption>
+          <thead>
+            <tr>
+              <th scope="col">{t.painel.colunas.modulo}</th>
+              <th scope="col">{t.painel.colunas.porta}</th>
+              <th scope="col">{t.painel.colunas.estado}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              t.painel.linhas.map((l, i) => (
+                <tr style={`--d:${900 + i * 450}ms`}>
+                  <td>{l.nome}</td>
+                  <td class="porta">{l.porta}</td>
+                  <td>
+                    <span class="estado">
+                      <span class="est-parado">{t.painel.parado}</span>
+                      <span class="est-rodando">{t.painel.rodando}</span>
+                    </span>
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+        <p class="painel-nota">{t.painel.legenda}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao fundo-faixa" id={t.faz.id} aria-labelledby="titulo-faz">
+    <div class="miolo">
+      <h2 class="titulo-secao" id="titulo-faz">{t.faz.titulo}</h2>
+      <p class="texto-secao">{t.faz.texto}</p>
+      <div class="grupos">
+        {
+          t.faz.grupos.map((g) => (
+            <div class="grupo" data-reveal>
+              <div>
+                <h3>{g.titulo}</h3>
+                <p class="grupo-texto">{g.texto}</p>
+              </div>
+              <ul class="itens">
+                {g.itens.map((it) => (
+                  <li class="item">
+                    <h4>{it.titulo}</h4>
+                    <p>{it.texto}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+      <div class="modulos-bloco" data-reveal>
+        <h3>{t.faz.modulosTitulo}</h3>
+        <ul class="modulos">
+          {t.faz.modulos.map((m) => <li>{m}</li>)}
+        </ul>
+        <p class="modulos-nota">{t.faz.modulosNota}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao" id={t.dentro.id} aria-labelledby="titulo-dentro">
+    <div class="miolo">
+      <h2 class="titulo-secao" id="titulo-dentro">{t.dentro.titulo}</h2>
+      <p class="texto-secao">{t.dentro.texto}</p>
+      <div class="janela shot-claro">
+        <Picture
+          src={painelClaro}
+          formats={['avif', 'webp']}
+          fallbackFormat="webp"
+          widths={[640, 960, 1250]}
+          sizes="(min-width: 1152px) 1100px, 100vw"
+          quality={80}
+          alt={t.dentro.principal.claro}
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+      <div class="janela shot-escuro">
+        <Picture
+          src={painelEscuro}
+          formats={['avif', 'webp']}
+          fallbackFormat="webp"
+          widths={[640, 960, 1250]}
+          sizes="(min-width: 1152px) 1100px, 100vw"
+          quality={80}
+          alt={t.dentro.principal.escuro}
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+      <div class="galeria">
+        {
+          t.dentro.figuras.map((f, i) => (
+            <figure data-reveal style={`--i:${i % 2}`}>
+              <div class="janela">
+                <Picture
+                  src={imagens[f.chave as keyof typeof imagens]}
+                  formats={['avif', 'webp']}
+                  fallbackFormat="webp"
+                  widths={[480, 720, 1000]}
+                  sizes="(min-width: 1152px) 540px, (min-width: 768px) 46vw, 100vw"
+                  quality={80}
+                  alt={f.alt}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <figcaption>{f.legenda}</figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="secao fundo-faixa" id={t.comecar.id} aria-labelledby="titulo-comecar">
+    <div class="miolo comecar-grade">
+      <div>
+        <h2 class="titulo-secao" id="titulo-comecar">{t.comecar.titulo}</h2>
+        <p class="texto-secao">{t.comecar.texto}</p>
+        <ol class="passos">
+          {
+            t.comecar.passos.map((p) => (
+              <li class="passo">
+                <h3>{p.titulo}</h3>
+                <p set:html={p.texto} />
+              </li>
+            ))
+          }
+        </ol>
+
+        <div class="sub-bloco">
+          <h3>{t.comecar.pacotes.titulo}</h3>
+          <p>{t.comecar.pacotes.scoop}</p>
+          <div class="cmd">
+            <pre id="cmd-scoop" tabindex="0">{t.comecar.pacotes.scoopCmd}</pre>
+            <div class="cmd-acoes">
+              <button type="button" class="btn btn-secundario btn-pequeno" data-copiar="cmd-scoop" data-copiado={t.comecar.pacotes.copiado}>
+                <span data-copiar-rotulo>{t.comecar.pacotes.copiar}</span><span class="sr-only"> {t.comecar.pacotes.copiarRotulo}</span>
+              </button>
+              <span class="cmd-aviso" role="status" data-copiar-aviso></span>
+            </div>
+          </div>
+          <p>{t.comecar.pacotes.winget}</p>
+        </div>
+
+        <div class="sub-bloco">
+          <h3>{t.comecar.terminal.titulo}</h3>
+          <p>{t.comecar.terminal.texto}</p>
+          <div class="cmd">
+            <pre id="cmd-terminal" tabindex="0">{t.comecar.terminal.cmd}</pre>
+          </div>
+        </div>
+      </div>
+
+      <aside class="baixar-caixa" aria-labelledby="titulo-arquivos">
+        <h3 id="titulo-arquivos">{t.comecar.downloadsTitulo}</h3>
+        <p class="nota-pequena">{t.comecar.downloadsNota}</p>
+        <ul class="arquivos">
+          {
+            t.comecar.downloads.map((d) => (
+              <li>
+                <span class="quem">
+                  <span class="sistema">
+                    {d.sistema}
+                    {d.previa && <span class="etiqueta">{t.comecar.previaRotulo}</span>}
+                  </span>
+                  <a href={d.href}>{d.arquivo}</a>
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="nota-pequena"><a href={LINKS.releases} rel="noopener">{t.comecar.todas}</a></p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="secao" id={t.previa.id} aria-labelledby="titulo-previa">
+    <div class="miolo">
+      <h2 class="titulo-secao" id="titulo-previa">{t.previa.titulo}</h2>
+      <p class="texto-secao">{t.previa.texto}</p>
+      <div class="previa-grade">
+        <div>
+          <ul class="lista-simples">
+            {t.previa.pontos.map((p) => <li set:html={p} />)}
+          </ul>
+          <div class="sub-bloco">
+            <h3>{t.previa.exemploTitulo}</h3>
+            <div class="cmd">
+              <pre tabindex="0">{t.previa.exemplo}</pre>
+            </div>
+          </div>
+        </div>
+        <div class="previa-faixa">
+          <h3>{t.previa.faltaTitulo}</h3>
+          <ul class="lista-simples">
+            {t.previa.falta.map((f) => <li>{f}</li>)}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao fundo-faixa" id={t.mcp.id} aria-labelledby="titulo-mcp">
+    <div class="miolo">
+      <h2 class="titulo-secao" id="titulo-mcp">{t.mcp.titulo}</h2>
+      <p class="texto-secao" set:html={t.mcp.texto} />
+      <div class="duas-colunas">
+        <div>
+          <h3>{t.mcp.claude}</h3>
+          <div class="cmd"><pre tabindex="0">{t.mcp.claudeCmd}</pre></div>
+        </div>
+        <div>
+          <h3>{t.mcp.cursor}</h3>
+          <div class="cmd"><pre tabindex="0">{t.mcp.cursorCmd}</pre></div>
+        </div>
+      </div>
+      <p class="texto-secao">{t.mcp.ferramentas}</p>
+    </div>
+  </section>
+
+  <section class="secao" id={t.confianca.id} aria-labelledby="titulo-confianca">
+    <div class="miolo">
+      <h2 class="titulo-secao" id="titulo-confianca">{t.confianca.titulo}</h2>
+      <div class="duas-colunas">
+        <div>
+          <h3>{t.confianca.requisitos.titulo}</h3>
+          <ul class="lista-simples">
+            {t.confianca.requisitos.itens.map((i) => <li>{i}</li>)}
+          </ul>
+        </div>
+        <div>
+          <h3>{t.confianca.privacidade.titulo}</h3>
+          <ul class="lista-simples">
+            {t.confianca.privacidade.itens.map((i) => <li>{i}</li>)}
+          </ul>
+          <p class="nota-pequena" set:html={t.confianca.privacidade.nota} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao fundo-faixa" id={t.faq.id} aria-labelledby="titulo-faq">
+    <div class="miolo">
+      <h2 class="titulo-secao" id="titulo-faq">{t.faq.titulo}</h2>
+      <div class="perguntas">
+        {
+          t.faq.itens.map((q) => (
+            <details class="pergunta">
+              <summary>
+                <span>{q.p}</span>
+                <Fragment set:html={chevron} />
+              </summary>
+              <div class="pergunta-resposta" set:html={q.r} />
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="secao" aria-labelledby="titulo-final">
+    <div class="miolo">
+      <div class="chamada" data-reveal>
+        <h2 id="titulo-final">{t.final.titulo}</h2>
+        <p>{t.final.texto}</p>
+        <div class="hero-acoes">
+          <a class="btn btn-primario" href={ARQUIVOS.win64}>{t.final.baixar}</a>
+          <a class="btn btn-secundario" href={LINKS.releases} rel="noopener">{t.final.todas}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Rodape slot="rodape" idioma={idioma} />
+</Base>

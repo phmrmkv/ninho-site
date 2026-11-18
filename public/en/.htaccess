@@ -1,0 +1,2 @@
+# 404 em inglês para tudo sob /en/
+ErrorDocument 404 /en/404.html

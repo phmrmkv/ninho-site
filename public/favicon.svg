@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- Ninho: a small server stack resting inside a woven nest, on a teal tile. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3fc9d3"/>
+      <stop offset="1" stop-color="#17808a"/>
+    </linearGradient>
+    <linearGradient id="slab" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#d9e6ea"/>
+    </linearGradient>
+    <linearGradient id="bowl" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d9964c"/>
+      <stop offset="1" stop-color="#93531f"/>
+    </linearGradient>
+    <clipPath id="bowlclip">
+      <path d="M34 146 Q128 176 222 146 Q218 214 128 222 Q38 214 34 146 Z"/>
+    </clipPath>
+  </defs>
+  <rect x="8" y="8" width="240" height="240" rx="56" fill="url(#bg)"/>
+  <path d="M8 64 Q8 8 64 8 H192 Q248 8 248 64 V100 Q128 70 8 100 Z" fill="#ffffff" opacity=".09"/>
+  <!-- back rim of the nest, behind the servers -->
+  <ellipse cx="128" cy="146" rx="94" ry="26" fill="#7a4217"/>
+  <g fill="none" stroke="#c98a45" stroke-width="5" stroke-linecap="round">
+    <path d="M42 140 Q90 118 150 124"/>
+    <path d="M214 140 Q170 116 108 122"/>
+  </g>
+  <!-- server stack -->
+  <g stroke="#14606a" stroke-width="4">
+    <rect x="76" y="40" width="104" height="32" rx="9" fill="url(#slab)"/>
+    <rect x="76" y="78" width="104" height="32" rx="9" fill="url(#slab)"/>
+    <rect x="76" y="116" width="104" height="32" rx="9" fill="url(#slab)"/>
+  </g>
+  <circle cx="95" cy="56" r="6" fill="#36c95f"/>
+  <circle cx="95" cy="94" r="6" fill="#36c95f"/>
+  <circle cx="95" cy="132" r="6" fill="#f2b33d"/>
+  <g fill="#93a9b0">
+    <rect x="110" y="53" width="54" height="6" rx="3"/>
+    <rect x="110" y="91" width="54" height="6" rx="3"/>
+    <rect x="110" y="129" width="54" height="6" rx="3"/>
+  </g>
+  <!-- front of the nest: a woven bowl -->
+  <path d="M34 146 Q128 176 222 146 Q218 214 128 222 Q38 214 34 146 Z" fill="url(#bowl)"/>
+  <g clip-path="url(#bowlclip)" fill="none" stroke-linecap="round">
+    <g stroke="#6b3812" stroke-width="5" opacity=".7">
+      <path d="M30 168 Q128 200 226 168"/>
+      <path d="M36 190 Q128 222 220 190"/>
+      <path d="M60 150 L92 222"/><path d="M100 160 L118 226"/><path d="M156 160 L138 226"/><path d="M196 150 L164 222"/>
+    </g>
+    <g stroke="#f0be7e" stroke-width="3" opacity=".9">
+      <path d="M40 160 Q128 190 216 160"/>
+      <path d="M44 182 Q128 212 212 182"/>
+      <path d="M76 154 L104 222"/><path d="M180 154 L152 222"/>
+    </g>
+  </g>
+  <path d="M34 146 Q128 176 222 146 Q218 214 128 222 Q38 214 34 146 Z" fill="none" stroke="#5a2e0e" stroke-width="5" stroke-linejoin="round"/>
+  <!-- stray twigs -->
+  <g fill="none" stroke="#5a2e0e" stroke-width="5" stroke-linecap="round">
+    <path d="M36 148 L18 136"/>
+    <path d="M220 148 L240 134"/>
+  </g>
+  <g fill="none" stroke="#e9ae66" stroke-width="2.5" stroke-linecap="round">
+    <path d="M36 148 L20 137"/>
+    <path d="M220 148 L238 135"/>
+  </g>
+</svg>

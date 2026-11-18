@@ -1,0 +1,26 @@
+---
+import Base from '@/layouts/Base.astro';
+import Cabecalho from './Cabecalho.astro';
+import Rodape from './Rodape.astro';
+import { textos } from '@/i18n';
+import { ROTAS, type Idioma } from '@/dados/ninho';
+
+interface Props {
+  idioma: Idioma;
+}
+const { idioma } = Astro.props;
+const t = textos[idioma];
+const outro: Idioma = idioma === 'pt' ? 'en' : 'pt';
+---
+
+<Base idioma={idioma} title={t.erro404.titulo} description={t.erro404.descricao} noindex>
+  <Cabecalho slot="topo" idioma={idioma} naHome={false} trocaHref={ROTAS[outro]} />
+  <section class="miolo pagina-erro" aria-labelledby="titulo-erro">
+    <div>
+      <h1 id="titulo-erro">{t.erro404.h1}</h1>
+      <p class="texto-secao">{t.erro404.texto}</p>
+      <p style="margin-top: 1.5rem"><a class="btn btn-primario" href={ROTAS[idioma]}>{t.erro404.voltar}</a></p>
+    </div>
+  </section>
+  <Rodape slot="rodape" idioma={idioma} />
+</Base>

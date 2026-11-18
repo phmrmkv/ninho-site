@@ -1,0 +1,29 @@
+---
+import Logo from './Logo.astro';
+import CreditoPHMR from './CreditoPHMR.astro';
+import { textos } from '@/i18n';
+import { ROTAS, type Idioma } from '@/dados/ninho';
+
+interface Props {
+  idioma: Idioma;
+}
+const { idioma } = Astro.props;
+const t = textos[idioma];
+---
+
+<footer class="rodape">
+  <div class="miolo rodape-grade">
+    <Logo href={ROTAS[idioma]} rotulo={t.logoRotulo} />
+    <p>{t.rodape.sobre}</p>
+    <nav aria-label={t.rodape.rotuloLinks}>
+      <ul class="rodape-links">
+        {t.rodape.links.map((l) => <li><a href={l.href} rel="noopener">{l.texto}</a></li>)}
+      </ul>
+    </nav>
+    <p>{t.rodape.aviso}</p>
+    <div class="rodape-credito">
+      {/* O rodapé é escuro nos dois temas: usa o logo de cores claras. */}
+      <CreditoPHMR fundo="escuro" idioma={idioma} />
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,39 @@
+---
+import Logo from './Logo.astro';
+import TemaAlternar from './TemaAlternar.astro';
+import { textos } from '@/i18n';
+import { ROTAS, LINKS, type Idioma } from '@/dados/ninho';
+
+interface Props {
+  idioma: Idioma;
+  /** Na 404 as âncoras apontam para a página inicial do idioma. */
+  naHome?: boolean;
+  /** Destino do seletor de idioma (a página equivalente). */
+  trocaHref: string;
+}
+const { idioma, naHome = true, trocaHref } = Astro.props;
+const t = textos[idioma];
+const base = naHome ? '' : ROTAS[idioma];
+const links = t.nav.itens.map((i) => ({ href: `${base}#${i.id}`, texto: i.texto }));
+---
+
+<header class="cabecalho" data-cabecalho data-rolado="false">
+  <div class="miolo cabecalho-linha">
+    <Logo href={ROTAS[idioma]} rotulo={t.logoRotulo} />
+    <nav class="nav-desktop" aria-label={t.nav.rotulo} data-nav>
+      {links.map((l) => <a class="link-nav" href={l.href}>{l.texto}</a>)}
+      <a class="link-nav" href={LINKS.repo} rel="noopener">{t.nav.github}</a>
+    </nav>
+    <a class="link-nav link-idioma" href={trocaHref} hreflang={t.idiomaTroca.lang} lang={t.idiomaTroca.lang}>{t.idiomaTroca.texto}</a>
+    <TemaAlternar escuro={t.tema.escuro} claro={t.tema.claro} />
+    <details class="menu-mobile" data-menu>
+      <summary aria-label={t.nav.rotuloMenu}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+      </summary>
+      <nav class="menu-painel" aria-label={t.nav.rotuloMenu}>
+        {links.map((l) => <a class="link-nav" href={l.href}>{l.texto}</a>)}
+        <a class="link-nav" href={LINKS.repo} rel="noopener">{t.nav.github}</a>
+      </nav>
+    </details>
+  </div>
+</header>

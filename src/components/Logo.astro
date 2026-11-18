@@ -1,0 +1,13 @@
+---
+// Logo real do Ninho (assets/ninho.svg do repositório), usado como está, mais o nome.
+interface Props {
+  href?: string;
+  rotulo?: string;
+}
+const { href = '/', rotulo = 'Ninho, início' } = Astro.props;
+---
+
+<a class="logo" href={href} aria-label={rotulo}>
+  <img src="/favicon.svg" width="32" height="32" alt="" />
+  <span class="logo-texto" aria-hidden="true">Ninho</span>
+</a>
